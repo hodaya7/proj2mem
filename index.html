@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Game</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .card {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      display: inline-block;
+      background: #2e6da4;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .card .front,
+    .card .back {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      backface-visibility: hidden;
+      position: absolute;
+      font-size: 24px;
+    }
+
+    .card .front {
+      background: #fff;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .cards {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center">Memory Game</h1>
+        <div class="cards">
+          <div class="card">
+            <div class="front">?</div>
+            <div class="back">A</div>
+          </div>
+          <div class="card">
+            <div class="front">?</div>
+            <div class="back">A</div>
+          </div>
+          <div class="card">
+            <div class="front">?</div>
+            <div class="back">B</div>
+          </div>
+          <div class="card">
+            <div class="front">?</div>
+            <div class="back">B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var flippedCards = [];
+      $('.card').click(function() {
+        if ($(this).hasClass('matched') || flippedCards.length === 2) return;
+        $(this).toggleClass('flipped');
+        flippedCards.push($(this));
+        if (flippedCards.length === 2) {
+          var card1 = flippedCards[0].find('.back').text();
+          var card2 = flippedCards[1].find('.back').text();
+          if (card1 === card2) {
+            flippedCards.forEach(function(card) {
+              card.addClass('matched');
+            });
+          } else {
+            setTimeout(function() {
+              flippedCards.forEach(function(card) {
+                card.removeClass('flipped');
+              });
+            }, 1000);
+          }
+          flippedCards = [];
+        }
+      });
+    });
+  </script>
+</body>
+</html>
